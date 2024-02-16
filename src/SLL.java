@@ -157,7 +157,7 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
         int index = 0;
         while(index!=n){
             index++;
-
+            next = next.getNext();
         }
 
 //        int index = 0;
