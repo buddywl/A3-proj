@@ -62,12 +62,21 @@ public class SLLTest {
     }
 
     public static void main(String[] args){
-        SLL<String> list = new SLL<String>();
-        list.addLast("A");
-        System.out.println("head.next: "+ list.getHead().getNext().toString());
-        System.out.println(list.toString());
-        System.out.println(Arrays.toString(a));
-        String s = verifySLL(list, a);
+//        SLL<String> list = new SLL<String>();
+//        list.addLast("A");
+//        System.out.println("head.next: "+ list.getHead().getNext().toString());
+//        System.out.println(list.toString());
+//        System.out.println(Arrays.toString(a));
+//        String s = verifySLL(list, a);
+//        System.out.println(s);
+
+        SLL<String> list = makeSLL(bac);
+        SLL<String> list2 = list.subseqByCopy(list.getHead(), 2);
+        String s = verifySLL(list2, ba);
+
+        System.out.println(list2.toString());
+        System.out.println("head.next.next: "+ list.getHead().getNext().getNext().toString());
+        System.out.println("tail: "+ list.getTail().toString());
         System.out.println(s);
     }
 
@@ -233,23 +242,23 @@ public class SLLTest {
 //        Assert.assertTrue("copy empty" + s, s.equals(""));
 //    }
 //
-//    @Test
-//    public void test_subseqByCopy() {
-//
-//        SLL<String> list = makeSLL(bac);
-//        SLL<String> list2 = list.subseqByCopy(list.getHead(), 2);
-//        String s = verifySLL(list2, ba);
-//        Assert.assertTrue("BAC.subseqByCopy(B,2) -> BA" + s, s.equals(""));
-//        s = verifySLL(list, bac);
-//        Assert.assertTrue("BAC.subseqByCopy(B,2): BAC same" + s, s.equals(""));
-//        Assert.assertTrue("Not shallow BA", list.getHead().getNext() != list2.getTail());
-//        list2 = list.subseqByCopy(list.getHead().getNext(), 2);
-//        s = verifySLL(list2, ac);
-//        Assert.assertTrue("BAC.subseqByCopy(A,2) -> AC" + s, s.equals(""));
-//        s = verifySLL(list, bac);
-//        Assert.assertTrue("BAC.subseqByCopy(A,2): BAC same" + s, s.equals(""));
-//        Assert.assertTrue("Not shallow AC", list.getTail() != list2.getTail());
-//    }
+    @Test
+    public void test_subseqByCopy() {
+
+        SLL<String> list = makeSLL(bac);
+        SLL<String> list2 = list.subseqByCopy(list.getHead(), 2);
+        String s = verifySLL(list2, ba);
+        Assert.assertTrue("BAC.subseqByCopy(B,2) -> BA" + s, s.equals(""));
+        s = verifySLL(list, bac);
+        Assert.assertTrue("BAC.subseqByCopy(B,2): BAC same" + s, s.equals(""));
+        Assert.assertTrue("Not shallow BA", list.getHead().getNext() != list2.getTail());
+        list2 = list.subseqByCopy(list.getHead().getNext(), 2);
+        s = verifySLL(list2, ac);
+        Assert.assertTrue("BAC.subseqByCopy(A,2) -> AC" + s, s.equals(""));
+        s = verifySLL(list, bac);
+        Assert.assertTrue("BAC.subseqByCopy(A,2): BAC same" + s, s.equals(""));
+        Assert.assertTrue("Not shallow AC", list.getTail() != list2.getTail());
+    }
 //
 //    @Test
 //    public void test_spliceByCopy() {
@@ -286,35 +295,35 @@ public class SLLTest {
 //
 //    }
 //
-//    @Test
-//    public void test_subseqByTransfer() {
-//
-//        SLL<String> list = makeSLL(debac);
-//        SLL<String> list2 = list.subseqByTransfer(list.getHead(), list.getHead().getNext().getNext());
-//        String s = verifySLL(list2, eb);
-//        Assert.assertTrue("DEBAC.subseqByTransfer(D,B) -> EB" + s, s.equals(""));
-//        s = verifySLL(list, dac);
-//        Assert.assertTrue("DEBAC.subseqByTransfer(D,B) becomes DAC" + s, s.equals(""));
-//        list = makeSLL(abc);
-//        list2 = list.subseqByTransfer(list.getHead(), list.getHead().getNext());
-//        s = verifySLL(list2, b);
-//        Assert.assertTrue("ABC.subseqByTransfer(A,B) -> B" + s, s.equals(""));
-//        s = verifySLL(list, ac);
-//        Assert.assertTrue("ABC.subseqByTransfer(A,C) becomes AC" + s, s.equals(""));
-//        list = makeSLL(debacfg);
-//        list2 = list.subseqByTransfer(list.getHead().getNext().getNext().getNext().getNext(), list.getTail());
-//        s = verifySLL(list2, fg);
-//        Assert.assertTrue("DEBACFG.subseqByTransfer(C,G) -> FG" + s, s.equals(""));
-//        s = verifySLL(list, debac);
-//        Assert.assertTrue("DEBACFG.subseqByTransfer(C,G) becomes DEBAC" + s, s.equals(""));
-//        list = makeSLL(hidebacfg);
-//        list2 = list.subseqByTransfer(null, list.getHead().getNext());
-//        s = verifySLL(list2, hi);
-//        Assert.assertTrue("HIDEBACFG.subseqByTransfer(null,I) -> HI" + s, s.equals(""));
-//        s = verifySLL(list, debacfg);
-//        Assert.assertTrue("HIDEBACFG.subseqByTransfer(null,I) becomes DEBACFG" + s, s.equals(""));
-//
-//    }
+    @Test
+    public void test_subseqByTransfer() {
+
+        SLL<String> list = makeSLL(debac);
+        SLL<String> list2 = list.subseqByTransfer(list.getHead(), list.getHead().getNext().getNext());
+        String s = verifySLL(list2, eb);
+        Assert.assertTrue("DEBAC.subseqByTransfer(D,B) -> EB" + s, s.equals(""));
+        s = verifySLL(list, dac);
+        Assert.assertTrue("DEBAC.subseqByTransfer(D,B) becomes DAC" + s, s.equals(""));
+        list = makeSLL(abc);
+        list2 = list.subseqByTransfer(list.getHead(), list.getHead().getNext());
+        s = verifySLL(list2, b);
+        Assert.assertTrue("ABC.subseqByTransfer(A,B) -> B" + s, s.equals(""));
+        s = verifySLL(list, ac);
+        Assert.assertTrue("ABC.subseqByTransfer(A,C) becomes AC" + s, s.equals(""));
+        list = makeSLL(debacfg);
+        list2 = list.subseqByTransfer(list.getHead().getNext().getNext().getNext().getNext(), list.getTail());
+        s = verifySLL(list2, fg);
+        Assert.assertTrue("DEBACFG.subseqByTransfer(C,G) -> FG" + s, s.equals(""));
+        s = verifySLL(list, debac);
+        Assert.assertTrue("DEBACFG.subseqByTransfer(C,G) becomes DEBAC" + s, s.equals(""));
+        list = makeSLL(hidebacfg);
+        list2 = list.subseqByTransfer(null, list.getHead().getNext());
+        s = verifySLL(list2, hi);
+        Assert.assertTrue("HIDEBACFG.subseqByTransfer(null,I) -> HI" + s, s.equals(""));
+        s = verifySLL(list, debacfg);
+        Assert.assertTrue("HIDEBACFG.subseqByTransfer(null,I) becomes DEBACFG" + s, s.equals(""));
+
+    }
 //
 //    @Test
 //    public void test_spliceByTransfer() {

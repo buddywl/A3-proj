@@ -1,3 +1,5 @@
+import org.w3c.dom.Node;
+
 import java.util.*;
 
 /**
@@ -158,28 +160,33 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
     }
 
     public SLL<T> subseqByCopy(NodeSL<T> here, int n) {
-        SLL<T> nodes = new SLL<T>();
+        if(isEmpty()){
+            throw new MissingElementException();
+        } else if (here == null){
+            return null;
+        } else {
+            SLL<T> nodes = new SLL<T>();
 
-        nodes.head = here;
-        NodeSL<T> next = here.getNext();
+            NodeSL<T> current = new NodeSL<>(null, null);
+            NodeSL<T> next =  new NodeSL<>(null, null);
+            current.setData(here.getData());
+//            next.setData(here.getNext().getData());
+            nodes.head = current;
 
-        nodes.head.setNext(next);
-        int index = 0;
-        while(index!=n){
-            index++;
+            int index = 1;
+            while (index < n){
+                index++;
+                next.setData(here.getNext().getData());
+                current.setNext(next);
+                current = next;
+                System.out.println(index);
+
+            }
+            nodes.tail = current;
+
+            return nodes;
         }
 
-
-//        int index = 0;
-//        NodeSL<T> current = here;
-//        NodeSL<T> previous = current;
-//        head = current;
-//        while(index != n){
-//            index++;
-//            current = current.getNext();
-//        }
-
-        return null;
     }
 
     public void spliceByCopy(SLL<T> list, NodeSL<T> afterHere) {
@@ -187,7 +194,27 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
     }
 
     public SLL<T> subseqByTransfer(NodeSL<T> afterHere, NodeSL<T> toHere) {
-        return null;
+        if(isEmpty()){
+            throw new MissingElementException();
+        } else if (afterHere == null){
+            return null;
+        } else {
+            SLL<T> nodes = new SLL<T>();
+
+            NodeSL<T> current = afterHere;
+            NodeSL<T> next = afterHere.getNext();
+
+            current.setNext(next);
+            nodes.head = current;
+
+            while(next != toHere){
+                current = next;
+                next = next.getNext();
+                current.setNext(next);
+            }
+
+            return nodes;
+        }
     }
 
 
