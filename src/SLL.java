@@ -1,3 +1,5 @@
+import java.util.*;
+
 /**
  * Class to implement a singly linked list
  *
@@ -57,11 +59,11 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
         if(isEmpty()){
             head = node;
             tail = head;
+        } else{
+            NodeSL<T> temp = tail;
+            tail = node;
+            temp.setNext(tail);
         }
-
-        NodeSL<T> temp = tail;
-        tail = node;
-        temp.setNext(tail);
 
 
     }
@@ -84,7 +86,11 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
     public T removeFirst(){
         if(isEmpty()){
             throw new MissingElementException();
-        } else{
+        } else if (head == tail) {
+            head = tail = null;
+            return head.getData();
+
+        } else {
             NodeSL<T> temp = head.getNext();
             T value = head.getData();
 
@@ -111,6 +117,7 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
                 previous = current;
                 current = current.getNext();
             }
+
             previous.setNext(null);
             tail = previous;
 
@@ -123,8 +130,10 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
         if(isEmpty()){
             throw new MissingElementException();
 
-        } else if (head == tail) {
-            return removeFirst();
+        } else if (here == null) {
+            T value = head.getData();
+            head = tail = null;
+            return value;
 
         } else {
             T value = here.getNext().getData();
@@ -149,16 +158,17 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
     }
 
     public SLL<T> subseqByCopy(NodeSL<T> here, int n) {
-        SLL<T> list = new SLL<T>();
-        list.head = here;
+        SLL<T> nodes = new SLL<T>();
+
+        nodes.head = here;
         NodeSL<T> next = here.getNext();
 
-        list.head.setNext(next);
+        nodes.head.setNext(next);
         int index = 0;
         while(index!=n){
             index++;
-            next = next.getNext();
         }
+
 
 //        int index = 0;
 //        NodeSL<T> current = here;
