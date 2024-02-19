@@ -47,10 +47,11 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
         StringBuilder string = new StringBuilder("[");
         if(!isEmpty()){
             string.append(head.getData().toString());
-        }
-        for (NodeSL<T> item = getHead(); item != getTail(); item = item.getNext()){
-            string.append(", ");
-            string.append(item.getNext().getData().toString());
+            for (NodeSL<T> item = getHead(); item != getTail(); item = item.getNext()){
+                string.append(", ");
+                string.append(item.getNext().getData().toString());
+            }
+
         }
         string.append("]");
         return string.toString();
@@ -160,15 +161,17 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
     }
 
     public SLL<T> subseqByCopy(NodeSL<T> here, int n) {
+        SLL<T> nodes = new SLL<T>();
+
+        NodeSL<T> current = new NodeSL<>(null, null);
+        NodeSL<T> next =  new NodeSL<>(null, null);
+
         if(isEmpty()){
             throw new MissingElementException();
-        } else if (here == null){
-            return null;
+        } else if (here == null || n == 0){
+            return nodes;                                            //STILL NEED TO CODE THIS
         } else {
-            SLL<T> nodes = new SLL<T>();
 
-            NodeSL<T> current = new NodeSL<>(null, null);
-            NodeSL<T> next =  new NodeSL<>(null, null);
             current.setData(here.getData());
 //            next.setData(here.getNext().getData());
             nodes.head = current;
@@ -190,28 +193,56 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
     }
 
     public void spliceByCopy(SLL<T> list, NodeSL<T> afterHere) {
+        NodeSL<T> toSplice = new NodeSL<>(null, null);
+        NodeSL<T> current = new NodeSL<>(null, null);
+        NodeSL<T> temp = list.head;
+
+        toSplice.setData(list.head.getData());
+        afterHere.setNext(toSplice);
+
+        while(toSplice.getData() != temp.getData()){
+            temp = temp.getNext();
+            toSplice.setData(temp.getData());
+        }
+
+
 
     }
 
     public SLL<T> subseqByTransfer(NodeSL<T> afterHere, NodeSL<T> toHere) {
+        SLL<T> nodes = new SLL<T>();
+
         if(isEmpty()){
             throw new MissingElementException();
+
         } else if (afterHere == null){
-            return null;
+            NodeSL<T> start = head;
+            NodeSL<T> end = toHere;
+            nodes.head = start;
+            nodes.tail = end;
+
+            head = toHere.getNext();
+            toHere.setNext(null);
+
+            return nodes;
+        } else if (toHere == null) {
+            NodeSL<T> start = afterHere.getNext();
+            NodeSL<T> end = tail;
+            nodes.head = start;
+            nodes.tail = end;
+
+            tail = afterHere;
+            afterHere.setNext(null);
+
+            return nodes;
         } else {
-            SLL<T> nodes = new SLL<T>();
+            NodeSL<T> start = afterHere.getNext();
+            NodeSL<T> end = toHere;
+            nodes.head = start;
+            nodes.tail = end;
 
-            NodeSL<T> current = afterHere;
-            NodeSL<T> next = afterHere.getNext();
-
-            current.setNext(next);
-            nodes.head = current;
-
-            while(next != toHere){
-                current = next;
-                next = next.getNext();
-                current.setNext(next);
-            }
+            afterHere.setNext(toHere.getNext());
+            toHere.setNext(null);
 
             return nodes;
         }

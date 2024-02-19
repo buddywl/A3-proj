@@ -70,13 +70,12 @@ public class SLLTest {
 //        String s = verifySLL(list, a);
 //        System.out.println(s);
 
-        SLL<String> list = makeSLL(bac);
-        SLL<String> list2 = list.subseqByCopy(list.getHead(), 2);
-        String s = verifySLL(list2, ba);
+        SLL<String> list = makeSLL(debac);
+        SLL<String> list2 = list.subseqByTransfer(list.getHead(), list.getHead().getNext().getNext());
+        String s = verifySLL(list2, eb);
 
         System.out.println(list2.toString());
-        System.out.println("head.next.next: "+ list.getHead().getNext().getNext().toString());
-        System.out.println("tail: "+ list.getTail().toString());
+        System.out.println(list.toString());
         System.out.println(s);
     }
 
