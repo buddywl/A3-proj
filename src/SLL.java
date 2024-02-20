@@ -60,11 +60,7 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
     public SLL(){
     }
 
-    public static void main(String[] args){
 
-    }
-
-//    public LinkedList<T> linkedList;
     private NodeSL<T> head;
     private NodeSL<T> tail;
 
