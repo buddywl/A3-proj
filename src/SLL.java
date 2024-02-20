@@ -10,6 +10,55 @@ import java.util.*;
  */
 
 public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
+    public SLL(SLL<T> list) {
+        if(!list.isEmpty()){
+            NodeSL<T> current = new NodeSL<>(null, null);
+
+            NodeSL<T> iterator = list.head;
+            NodeSL<T> tempTail = new NodeSL<>(list.tail.getData());
+
+            current.setData(iterator.getData());
+            this.head = current;
+
+            int index = 1;
+
+            while(index < list.size()){
+                NodeSL<T> next = new NodeSL<>(null, null);
+
+                index++;
+                next.setData(iterator.getNext().getData());
+
+                iterator = iterator.getNext();
+
+                current.setNext(next);
+                current = next;
+            }
+            this.tail = current;
+        } else {
+            this.head = this.tail = null;
+        }
+
+
+
+//        NodeSL<T> previous = tempHead;
+//        NodeSL<T> temp = null;
+//        NodeSL<T> first = null;
+//
+//        while (previous != null) {
+//            NodeSL<T> node = new NodeSL<T>(previous.getData());
+//            if (first == null) {
+//                first = node;
+//                temp = first;
+//            } else {
+//                temp.setNext(node);
+//                temp = temp.getNext();
+//            }
+//
+//            previous = previous.getNext();
+//        }
+    }
+    public SLL(){
+    }
 
     public static void main(String[] args){
 
@@ -45,7 +94,12 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
 
     public String toString(){
         StringBuilder string = new StringBuilder("[");
-        if(!isEmpty()){
+
+        if(isEmpty()){
+
+        }else if (head == tail){
+            string.append(head.getData().toString());
+        }else{
             string.append(head.getData().toString());
             for (NodeSL<T> item = getHead(); item != getTail(); item = item.getNext()){
                 string.append(", ");
@@ -90,8 +144,9 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
         if(isEmpty()){
             throw new MissingElementException();
         } else if (head == tail) {
+            T value = head.getData();
             head = tail = null;
-            return head.getData();
+            return value;
 
         } else {
             NodeSL<T> temp = head.getNext();
@@ -111,7 +166,7 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
         } else if (head == tail) {
             return removeFirst();
 
-        } else{
+        } else {
             NodeSL<T> current = head;
             NodeSL<T> previous = current;
             T value = tail.getData();
@@ -160,11 +215,12 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
         }
     }
 
+
+
     public SLL<T> subseqByCopy(NodeSL<T> here, int n) {
         SLL<T> nodes = new SLL<T>();
 
         NodeSL<T> current = new NodeSL<>(null, null);
-        NodeSL<T> next =  new NodeSL<>(null, null);
 
         if(isEmpty()){
             throw new MissingElementException();
@@ -178,12 +234,15 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
 
             int index = 1;
             while (index < n){
+                NodeSL<T> next =  new NodeSL<>(null, null);
+
                 index++;
                 next.setData(here.getNext().getData());
+
+                here = here.getNext();
+
                 current.setNext(next);
                 current = next;
-                System.out.println(index);
-
             }
             nodes.tail = current;
 
@@ -193,17 +252,37 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
     }
 
     public void spliceByCopy(SLL<T> list, NodeSL<T> afterHere) {
-        NodeSL<T> toSplice = new NodeSL<>(null, null);
-        NodeSL<T> current = new NodeSL<>(null, null);
-        NodeSL<T> temp = list.head;
 
-        toSplice.setData(list.head.getData());
-        afterHere.setNext(toSplice);
-
-        while(toSplice.getData() != temp.getData()){
-            temp = temp.getNext();
-            toSplice.setData(temp.getData());
+        if(afterHere == list.getHead()){
+            throw new SelfInsertException();
+        } else {
+            SLL<T> spliceCopy = new SLL<>(list);
+            if(afterHere == null){
+                spliceCopy.getTail().setNext(getHead());
+                head = spliceCopy.getHead();
+                tail = head;
+                for(NodeSL<T> item = spliceCopy.head.getNext(); item != null; item = item.getNext()){
+                    NodeSL<T> node = new NodeSL<>(item.getData());
+                    tail.setNext(node);
+                    tail = node;
+                }
+                list.tail.setNext(null);
+            } else {
+                SLL<T> spliced = new SLL<>();
+                while (tail != afterHere){
+                    T v = removeLast();
+                    spliced.addFirst(v);
+                }
+                for (NodeSL<T> item = spliceCopy.getHead(); item != null; item = item.getNext()){
+                    this.addLast(item.getData());
+                }
+                for (NodeSL<T> item = spliced.getHead(); item != null; item = item.getNext()){
+                    this.addLast(item.getData());
+                }
+            }
         }
+
+
 
 
 
@@ -250,6 +329,21 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
 
 
     public void spliceByTransfer(SLL<T> list, NodeSL<T> afterHere) {
+        SLL<T> spliceNodes = new SLL<>(list);
+        if(afterHere == spliceNodes.getHead()){
+            throw new SelfInsertException();
+        } else if (afterHere == null) {
+            while(!list.isEmpty()){
+                addFirst(list.removeLast());
+            }
+        } else {
+            while(!list.isEmpty()){
+                addAfter(afterHere, list.removeLast());
+            }
 
+        }
     }
+
+
+
 }
