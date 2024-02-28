@@ -10,6 +10,9 @@ import java.util.*;
  */
 
 public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
+
+    public SLL(){
+    }
     public SLL(SLL<T> list) {
         if(!list.isEmpty()){
             NodeSL<T> current = new NodeSL<>(null, null);
@@ -37,29 +40,7 @@ public class SLL<T> implements Phase1SLL<T>, Phase2SLL<T>, Phase4SLL<T>{
         } else {
             this.head = this.tail = null;
         }
-
-
-
-//        NodeSL<T> previous = tempHead;
-//        NodeSL<T> temp = null;
-//        NodeSL<T> first = null;
-//
-//        while (previous != null) {
-//            NodeSL<T> node = new NodeSL<T>(previous.getData());
-//            if (first == null) {
-//                first = node;
-//                temp = first;
-//            } else {
-//                temp.setNext(node);
-//                temp = temp.getNext();
-//            }
-//
-//            previous = previous.getNext();
-//        }
     }
-    public SLL(){
-    }
-
 
     private NodeSL<T> head;
     private NodeSL<T> tail;
